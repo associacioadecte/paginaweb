@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projecte Landerer — ADECTE</title>
+<meta name="description" content="El Projecte Aeroespacial Landerer acosta l'enginyeria espacial als centres educatius de les Terres de l'Ebre.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-pagina="landerer">
+
+<header class="capcalera">
+  <div class="contenidor">
+    <a href="index.html" class="marca">
+      <img src="assets/img/logo.png" alt="Logotip d'ADECTE"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <span class="marca-fallback" style="display:none;">AD</span>
+      <span>ADECTE</span>
+    </a>
+    <button class="menu-toggle" aria-label="Obre el menú" aria-expanded="false">☰</button>
+    <nav class="nav-principal">
+      <ul>
+        <li><a href="index.html" data-pagina="inici">Inici</a></li>
+        <li><a href="activitats.html" data-pagina="activitats">Activitats</a></li>
+        <li class="nav-item-dropdown">
+          <a href="landerer.html" data-pagina="landerer">Landerer</a>
+          <button type="button" class="nav-dropdown-btn" aria-label="Submenú Landerer" aria-expanded="false">▾</button>
+          <ul class="nav-submenu">
+            <li><a href="landerer.html" data-pagina="landerer">El projecte</a></li>
+            <li><a href="landerer-edicio-1.html" data-pagina="landerer-edicio-1">Edició I</a></li>
+            <li><a href="landerer-edicio-2.html" data-pagina="landerer-edicio-2">Edició II</a></li>
+          </ul>
+        </li>
+        <li><a href="qui-som.html" data-pagina="qui-som">Qui som</a></li>
+        <li><a href="galeria.html" data-pagina="galeria">Galeria</a></li>
+        <li><a href="socis.html" class="btn-soci-nav" data-pagina="socis">Fes-te'n soci</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="landerer-portada">
+  <div class="landerer-portada-foto" data-imatge-contenidor>
+    <img src="assets/img/landerer/portada.png" alt="" data-fallback-text="landerer/portada.png">
+  </div>
+  <div class="landerer-portada-contingut">
+    <div class="contenidor">
+      <div data-imatge-contenidor>
+        <img src="assets/img/landerer/logo-landerer.png" alt="Logotip del Projecte Aeroespacial Landerer" class="landerer-logo-projecte" data-fallback-text="logo-landerer.png">
+      </div>
+      <div class="landerer-portada-text">
+        <span class="landerer-senyera" aria-hidden="true" title="Senyera"></span>
+        <h1>Projecte Aeroespacial <span>Landerer</span></h1>
+        <p>El projecte estrella d'ADECTE: enginyeria aeroespacial i divulgació científica amb centres educatius de les Terres de l'Ebre.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccio landerer-intro">
+  <div class="contenidor bloc-text">
+    <span class="eyebrow" style="color:var(--landerer-cel);">El projecte</span>
+    <h2>Ciència aeroespacial al territori</h2>
+    <p>El Projecte Aeroespacial Landerer és l'eix central de l'associació. Cada edició reuneix centres educatius de les nostres comarques en un repte pràctic d'enginyeria, disseny i experimentació.</p>
+    <p>Combina divulgació científica, treball en equip i aprenentatge actiu, amb el suport de patrocinadors i institucions col·laboradores del territori.</p>
+  </div>
+</section>
+
+<section class="seccio ratlla-superior fons-panell">
+  <div class="contenidor">
+    <div class="seccio-titol">
+      <div><span class="eyebrow" style="color:var(--landerer-cel);">Edicions</span><h2>Explora cada edició</h2></div>
+    </div>
+    <div class="targetes-edicions">
+      <article class="targeta-edicio">
+        <h3>Edició I</h3>
+        <p>Tres centres educatius, primera experiència del projecte i el mapa de la ruta de vol.</p>
+        <a href="landerer-edicio-1.html" class="btn btn-landerer">Veure Edició I →</a>
+      </article>
+      <article class="targeta-edicio">
+        <h3>Edició II</h3>
+        <p>Quatre centres participants, un nou patrocinador i noves imatges del projecte.</p>
+        <a href="landerer-edicio-2.html" class="btn btn-landerer">Veure Edició II →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<footer class="peu">
+  <div class="contenidor">
+    <div class="peu-graella">
+      <div>
+        <h4>ADECTE</h4>
+        <p style="color:var(--boira); max-width:320px; font-size:.92rem;">Associació per a la Divulgació Espacial i Científica de les Terres de l'Ebre.</p>
+      </div>
+      <div>
+        <h4>Navegació</h4>
+        <a href="activitats.html">Activitats</a>
+        <a href="landerer.html">Landerer</a>
+        <a href="landerer-edicio-1.html">Edició I</a>
+        <a href="landerer-edicio-2.html">Edició II</a>
+        <a href="qui-som.html">Qui som</a>
+        <a href="galeria.html">Galeria</a>
+        <a href="socis.html">Fes-te'n soci</a>
+      </div>
+      <div>
+        <h4>Contacte</h4>
+        <a href="mailto:associacioadecte@gmail.com">associacioadecte@gmail.com</a>
+        <a href="https://instagram.com/adecte_assoc" target="_blank" rel="noopener" class="peu-instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+          @adecte_assoc
+        </a>
+      </div>
+    </div>
+    <div class="peu-baix">
+      <span>© <span id="any-actual">2026</span> ADECTE — Terres de l'Ebre</span>
+      <span>Fet amb ✦ per a tots els qui miren amunt</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+<script>document.getElementById('any-actual').textContent = new Date().getFullYear();</script>
+</body>
+</html>

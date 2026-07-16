@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Activitats — ADECTE</title>
+<meta name="description" content="Consulta totes les observacions astronòmiques i activitats de divulgació organitzades per ADECTE a les Terres de l'Ebre.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-pagina="activitats">
+
+<header class="capcalera">
+  <div class="contenidor">
+    <a href="index.html" class="marca">
+      <img src="assets/img/logo.png" alt="Logotip d'ADECTE"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <span class="marca-fallback" style="display:none;">AD</span>
+      <span>ADECTE</span>
+    </a>
+    <button class="menu-toggle" aria-label="Obre el menú" aria-expanded="false">☰</button>
+    <nav class="nav-principal">
+      <ul>
+        <li><a href="index.html" data-pagina="inici">Inici</a></li>
+        <li><a href="activitats.html" data-pagina="activitats">Activitats</a></li>
+        <li class="nav-item-dropdown">
+          <a href="landerer.html" data-pagina="landerer">Landerer</a>
+          <button type="button" class="nav-dropdown-btn" aria-label="Submenú Landerer" aria-expanded="false">▾</button>
+          <ul class="nav-submenu">
+            <li><a href="landerer.html" data-pagina="landerer">El projecte</a></li>
+            <li><a href="landerer-edicio-1.html" data-pagina="landerer-edicio-1">Edició I</a></li>
+            <li><a href="landerer-edicio-2.html" data-pagina="landerer-edicio-2">Edició II</a></li>
+          </ul>
+        </li>
+        <li><a href="qui-som.html" data-pagina="qui-som">Qui som</a></li>
+        <li><a href="galeria.html" data-pagina="galeria">Galeria</a></li>
+        <li><a href="socis.html" class="btn-soci-nav" data-pagina="socis">Fes-te'n soci</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="capcalera-pagina">
+  <canvas data-cel-estrellat aria-hidden="true"></canvas>
+  <div class="contenidor">
+    <span class="eyebrow">Agenda</span>
+    <h1>Activitats</h1>
+    <p>Observacions i activitats de divulgació obertes a tothom. Les activitats a l'aire lliure depenen de la meteorologia.</p>
+  </div>
+</section>
+
+<section class="seccio">
+  <div class="contenidor">
+    <div class="seccio-titol">
+      <div><span class="eyebrow">Properes</span><h2>El que ve ara</h2></div>
+    </div>
+    <div class="graella-activitats" data-agenda="propera" data-etiquetes="true"></div>
+  </div>
+</section>
+
+<section class="seccio ratlla-superior fons-panell">
+  <div class="contenidor">
+    <div class="seccio-titol">
+      <div><span class="eyebrow">Arxiu</span><h2>Activitats passades</h2></div>
+    </div>
+    <div class="graella-activitats" data-agenda="passada" data-etiquetes="true"></div>
+  </div>
+</section>
+
+<section class="seccio" style="text-align:center;">
+  <div class="contenidor">
+    <span class="eyebrow" style="justify-content:center;">No t'ho perdis</span>
+    <h2>Vols que t'avisem de les properes activitats?</h2>
+    <p style="color:var(--boira); max-width:480px; margin:0 auto 1.5rem;">Fes-te'n soci o segueix-nos a Instagram per rebre tots els avisos.</p>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <a href="socis.html" class="btn btn-primari">Fes-te'n soci</a>
+      <a href="https://instagram.com/adecte_assoc" target="_blank" rel="noopener" class="btn btn-secundari">@adecte_assoc</a>
+    </div>
+  </div>
+</section>
+
+<footer class="peu">
+  <div class="contenidor">
+    <div class="peu-graella">
+      <div>
+        <h4>ADECTE</h4>
+        <p style="color:var(--boira); max-width:320px; font-size:.92rem;">Associació per a la Divulgació Espacial i Científica de les Terres de l'Ebre.</p>
+      </div>
+      <div>
+        <h4>Navegació</h4>
+        <a href="activitats.html">Activitats</a>
+        <a href="landerer.html">Landerer</a>
+        <a href="landerer-edicio-1.html">Edició I</a>
+        <a href="landerer-edicio-2.html">Edició II</a>
+        <a href="qui-som.html">Qui som</a>
+        <a href="galeria.html">Galeria</a>
+        <a href="socis.html">Fes-te'n soci</a>
+      </div>
+      <div>
+        <h4>Contacte</h4>
+        <a href="mailto:associacioadecte@gmail.com">associacioadecte@gmail.com</a>
+        <a href="https://instagram.com/adecte_assoc" target="_blank" rel="noopener" class="peu-instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+          @adecte_assoc
+        </a>
+      </div>
+    </div>
+    <div class="peu-baix">
+      <span>© <span id="any-actual">2026</span> ADECTE — Terres de l'Ebre</span>
+      <span>Fet amb ✦ per a tots els qui miren amunt</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/data/agenda.js"></script>
+<script src="assets/js/main.js"></script>
+<script>document.getElementById('any-actual').textContent = new Date().getFullYear();</script>
+</body>
+</html>
