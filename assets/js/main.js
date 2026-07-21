@@ -79,17 +79,15 @@ function iniciaCelEstrellat(canvas, opcions = {}) {
 
 /* ---------- 2. Fase lunar ---------- */
 function calculaFaseLunar(data = new Date()) {
-  // Referència: Lluna plena (de maduixa) del 30 de juny de 2026 a les 01:57 (CEST) = 29/06/2026 23:57 UTC.
-  // Actualitza aquesta data de tant en tant amb una lluna plena propera perquè el càlcul no es desfasi.
-  const refPlenilluni = new Date(Date.UTC(2026, 5, 29, 23, 57));
-  const cicleSinodic = 29.530588853;
-  const diesTranscorreguts = (data.getTime() - refPlenilluni.getTime()) / 86400000;
-  let fraccioDesDePlenilluni = (diesTranscorreguts % cicleSinodic) / cicleSinodic;
-  if (fraccioDesDePlenilluni < 0) fraccioDesDePlenilluni += 1;
-  // fraccioDesDePlenilluni: 0 = lluna plena. Es converteix a la convenció fase: 0 = lluna nova, 0.5 = lluna plena.
-  let fase = (fraccioDesDePlenilluni + 0.5) % 1;
+  // SunCalc retorna un objecte amb:
+  // - fraction: il·luminació (de 0 a 1)
+  // - phase: fase lunar de 0 a 1 (0 = lluna nova, 0.25 = quart creixent, 0.5 = lluna plena, 0.75 = quart minvant)
+  // - angle: angle de la lluna respecte al meridià
+  const dadesSunCalc = SunCalc.getMoonIllumination(data);
+  
+  const fase = dadesSunCalc.phase;
+  const illuminacio = dadesSunCalc.fraction;
 
-  const illuminacio = (1 - Math.cos(fase * 2 * Math.PI)) / 2;
   let nom;
   if (fase < 0.03 || fase > 0.97) nom = 'Lluna nova';
   else if (fase < 0.22) nom = 'Lluna creixent';
@@ -106,9 +104,23 @@ function calculaFaseLunar(data = new Date()) {
 function dibuixaLluna(svgEl, fase) {
   if (!svgEl) return;
   const radi = 40;
-  const desplacament = Math.cos(fase * 2 * Math.PI) * radi * 1.7;
+  const centreLlunaX = 50; // Coordenada X del centre de la lluna al SVG
+
+  // CORRECCIÓ: Utilitzem el seno per a una transició suau de -1 a 1.
+  // Multipliquem per -1 per a l'hemisferi nord perquè l'ombra
+  // comenci a la dreta i vagi cap a l'esquerra a mesura que creix.
+  const factorDesplacament = -Math.sin(fase * 2 * Math.PI);
+  
+  // Calculem el desplaçament màxim. El radi de la lluna és 40,
+  // així que el màxim desplaçament ha de ser 40 perquè l'ombra
+  // desaparegui per una banda o l'altra.
+  const desplacament = factorDesplacament * radi;
+
   const ombra = svgEl.querySelector('#ombra-lluna');
-  if (ombra) ombra.setAttribute('cx', 50 + desplacament);
+  if (ombra) {
+    // Apliquem el desplaçament a la posició X de l'ombra
+    ombra.setAttribute('cx', centreLlunaX + desplacament);
+  }
 }
 
 function iniciaWidgetCel() {
