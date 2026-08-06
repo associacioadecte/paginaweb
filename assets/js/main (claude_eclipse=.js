@@ -371,11 +371,20 @@ function marcaNavActiu() {
   }
 }
 
-/* ---------- 9. Eclipsi total de sol — 12 d'agost de 2026 ---------- */
-const ECLIPSI_C1 = new Date(Date.UTC(2026, 7, 12, 17, 35, 0));
-const ECLIPSI_C2 = new Date(Date.UTC(2026, 7, 12, 18, 29, 0));
-const ECLIPSI_C3 = new Date(Date.UTC(2026, 7, 12, 18, 30, 30));
-const ECLIPSI_C4 = new Date(Date.UTC(2026, 7, 12, 19, 0, 0));
+/* ---------- 9. Eclipsi total de sol — 12 d'agost de 2026 ----------
+   Hores de referència per a les Terres de l'Ebre / Camp de Tarragona
+   (aproximades; per a horaris exactes municipi a municipi, eclipsicatalunya.cat).
+   Totes en UTC (CEST = UTC+2 a l'agost).
+
+   Cada widget (contenidor amb [data-eclipsi-widget]) es calcula de manera
+   independent: si porta els atributs data-eclipsi-c1..c4 (dates ISO), fa
+   servir aquesta línia de temps pròpia; si no, fa servir la línia de temps
+   real de l'eclipsi. Això permet tenir el widget real i, alhora, una
+   simulació de demostració amb el seu propi horari accelerat. --------- */
+const ECLIPSI_C1 = new Date(Date.UTC(2026, 7, 12, 17, 35, 0));   // 19:35 CEST — inici de la fase parcial
+const ECLIPSI_C2 = new Date(Date.UTC(2026, 7, 12, 18, 29, 0));   // 20:29 CEST — inici de la totalitat
+const ECLIPSI_C3 = new Date(Date.UTC(2026, 7, 12, 18, 30, 30));  // ~20:30:30 CEST — fi de la totalitat (~1'30")
+const ECLIPSI_C4 = new Date(Date.UTC(2026, 7, 12, 19, 0, 0));    // 21:00 CEST — fi de la fase parcial
 
 function calculaEstatEclipsi(ara, c1, c2, c3, c4) {
   let fase, overlap, missatge;
@@ -404,12 +413,13 @@ function dibuixaEclipsi(svgEl, overlap, fase) {
   if (!svgEl) return;
   const lluna = svgEl.querySelector('[data-lluna-eclipsi]');
   if (!lluna) return;
-  const distanciaMax = 40 * 2.1;
+  const distanciaMax = 40 * 2.1; // radi del disc * 2.1, perquè comenci fora de camp
   const distancia = distanciaMax * (1 - overlap);
   const signe = (fase === 'parcial-sortida' || fase === 'despres') ? -1 : 1;
   lluna.setAttribute('cx', 50 + signe * distancia);
 }
 
+// Format detallat (dies, hores, minuts, segons) — widget complet d'/eclipsi.html
 function formataCompteEnrere(ms) {
   if (ms <= 0) return '—';
   const dies = Math.floor(ms / 86400000);
@@ -419,6 +429,8 @@ function formataCompteEnrere(ms) {
   return dies > 0 ? `${dies}d ${hores}h ${minuts}m ${segons}s` : `${hores}h ${minuts}m ${segons}s`;
 }
 
+// Format compacte de només 2 unitats: dies+hores mentre en quedin, i
+// hores+minuts quan ja no quedi cap dia sencer — pensat per a la barra superior.
 function formataCompte2Unitats(ms) {
   if (ms <= 0) return '—';
   const dies = Math.floor(ms / 86400000);
@@ -461,25 +473,13 @@ function iniciaWidgetEclipsi() {
   setInterval(actualitzaWidgetsEclipsi, 1000);
 }
 
+// Ajusta l'alçada real de la barra superior de l'eclipsi perquè la
+// capçalera fixa i l'heroi es col·loquin just a sota, sigui quina sigui
+// l'alçada que ocupi el text en cada amplada de pantalla.
 function ajustaBarraEclipsi() {
   const barra = document.querySelector('.barra-eclipsi');
   if (!barra) return;
   document.documentElement.style.setProperty('--barra-eclipsi-alcada', barra.offsetHeight + 'px');
-}
-
-function iniciaScrollEclipsi() {
-  const barra = document.querySelector('.barra-eclipsi');
-  if (!barra) return;
-  function comprovaScroll() {
-    if (window.scrollY > 30) {
-      barra.classList.add('compact');
-    } else {
-      barra.classList.remove('compact');
-    }
-    ajustaBarraEclipsi();
-  }
-  window.addEventListener('scroll', comprovaScroll);
-  comprovaScroll();
 }
 
 /* ---------- Inicialització ---------- */
@@ -488,7 +488,6 @@ document.addEventListener('DOMContentLoaded', () => {
   iniciaWidgetCel();
   iniciaWidgetEclipsi();
   ajustaBarraEclipsi();
-  iniciaScrollEclipsi();
   iniciaNavegacio();
   gestionaImatgesAmbAlternativa();
   iniciaLightbox();
@@ -497,3 +496,4 @@ document.addEventListener('DOMContentLoaded', () => {
   carregaGaleria();
 });
 window.addEventListener('resize', ajustaBarraEclipsi);
+

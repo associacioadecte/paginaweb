@@ -371,124 +371,10 @@ function marcaNavActiu() {
   }
 }
 
-/* ---------- 9. Eclipsi total de sol — 12 d'agost de 2026 ---------- */
-const ECLIPSI_C1 = new Date(Date.UTC(2026, 7, 12, 17, 35, 0));
-const ECLIPSI_C2 = new Date(Date.UTC(2026, 7, 12, 18, 29, 0));
-const ECLIPSI_C3 = new Date(Date.UTC(2026, 7, 12, 18, 30, 30));
-const ECLIPSI_C4 = new Date(Date.UTC(2026, 7, 12, 19, 0, 0));
-
-function calculaEstatEclipsi(ara, c1, c2, c3, c4) {
-  let fase, overlap, missatge;
-  if (ara < c1) {
-    fase = 'abans'; overlap = 0;
-    missatge = 'Encara no ha començat';
-  } else if (ara < c2) {
-    fase = 'parcial-entrada';
-    overlap = (ara - c1) / (c2 - c1);
-    missatge = 'Fase parcial: la Lluna comença a tapar el Sol';
-  } else if (ara < c3) {
-    fase = 'totalitat'; overlap = 1;
-    missatge = 'TOTALITAT — el Sol queda completament tapat';
-  } else if (ara < c4) {
-    fase = 'parcial-sortida';
-    overlap = 1 - (ara - c3) / (c4 - c3);
-    missatge = 'Fase parcial: la Lluna es va retirant';
-  } else {
-    fase = 'despres'; overlap = 0;
-    missatge = 'L\'eclipsi ja s\'ha viscut. Fins al 2 d\'agost de 2027!';
-  }
-  return { fase, overlap, missatge };
-}
-
-function dibuixaEclipsi(svgEl, overlap, fase) {
-  if (!svgEl) return;
-  const lluna = svgEl.querySelector('[data-lluna-eclipsi]');
-  if (!lluna) return;
-  const distanciaMax = 40 * 2.1;
-  const distancia = distanciaMax * (1 - overlap);
-  const signe = (fase === 'parcial-sortida' || fase === 'despres') ? -1 : 1;
-  lluna.setAttribute('cx', 50 + signe * distancia);
-}
-
-function formataCompteEnrere(ms) {
-  if (ms <= 0) return '—';
-  const dies = Math.floor(ms / 86400000);
-  const hores = Math.floor((ms % 86400000) / 3600000);
-  const minuts = Math.floor((ms % 3600000) / 60000);
-  const segons = Math.floor((ms % 60000) / 1000);
-  return dies > 0 ? `${dies}d ${hores}h ${minuts}m ${segons}s` : `${hores}h ${minuts}m ${segons}s`;
-}
-
-function formataCompte2Unitats(ms) {
-  if (ms <= 0) return '—';
-  const dies = Math.floor(ms / 86400000);
-  const hores = Math.floor((ms % 86400000) / 3600000);
-  const minuts = Math.floor((ms % 3600000) / 60000);
-  return dies > 0 ? `${dies}d ${hores}h` : `${hores}h ${minuts}m`;
-}
-
-function actualitzaWidgetsEclipsi() {
-  const ara = new Date();
-
-  document.querySelectorAll('[data-eclipsi-widget]').forEach(widget => {
-    const c1 = widget.dataset.eclipsiC1 ? new Date(widget.dataset.eclipsiC1) : ECLIPSI_C1;
-    const c2 = widget.dataset.eclipsiC2 ? new Date(widget.dataset.eclipsiC2) : ECLIPSI_C2;
-    const c3 = widget.dataset.eclipsiC3 ? new Date(widget.dataset.eclipsiC3) : ECLIPSI_C3;
-    const c4 = widget.dataset.eclipsiC4 ? new Date(widget.dataset.eclipsiC4) : ECLIPSI_C4;
-
-    const { fase, overlap, missatge } = calculaEstatEclipsi(ara, c1, c2, c3, c4);
-    const objectius = { 'abans': c1, 'parcial-entrada': c2, 'totalitat': c3, 'parcial-sortida': c4 };
-    const objectiu = objectius[fase];
-
-    const svg = widget.querySelector('[data-eclipsi-svg]');
-    if (svg) dibuixaEclipsi(svg, overlap, fase);
-
-    const estatEl = widget.querySelector('[data-eclipsi-estat]');
-    if (estatEl) estatEl.textContent = missatge;
-
-    const compteEl = widget.querySelector('[data-eclipsi-compte-enrere]');
-    if (compteEl) compteEl.textContent = objectiu ? formataCompteEnrere(objectiu - ara) : 'Finalitzat';
-
-    const compte2uEl = widget.querySelector('[data-eclipsi-compte-2u]');
-    if (compte2uEl) compte2uEl.textContent = objectiu ? formataCompte2Unitats(objectiu - ara) : 'Viscut ✦';
-  });
-}
-
-function iniciaWidgetEclipsi() {
-  const hiHaWidgets = document.querySelector('[data-eclipsi-widget]');
-  if (!hiHaWidgets) return;
-  actualitzaWidgetsEclipsi();
-  setInterval(actualitzaWidgetsEclipsi, 1000);
-}
-
-function ajustaBarraEclipsi() {
-  const barra = document.querySelector('.barra-eclipsi');
-  if (!barra) return;
-  document.documentElement.style.setProperty('--barra-eclipsi-alcada', barra.offsetHeight + 'px');
-}
-
-function iniciaScrollEclipsi() {
-  const barra = document.querySelector('.barra-eclipsi');
-  if (!barra) return;
-  function comprovaScroll() {
-    if (window.scrollY > 30) {
-      barra.classList.add('compact');
-    } else {
-      barra.classList.remove('compact');
-    }
-    ajustaBarraEclipsi();
-  }
-  window.addEventListener('scroll', comprovaScroll);
-  comprovaScroll();
-}
-
 /* ---------- Inicialització ---------- */
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[data-cel-estrellat]').forEach(c => iniciaCelEstrellat(c));
   iniciaWidgetCel();
-  iniciaWidgetEclipsi();
-  ajustaBarraEclipsi();
-  iniciaScrollEclipsi();
   iniciaNavegacio();
   gestionaImatgesAmbAlternativa();
   iniciaLightbox();
@@ -496,4 +382,3 @@ document.addEventListener('DOMContentLoaded', () => {
   carregaAgenda();
   carregaGaleria();
 });
-window.addEventListener('resize', ajustaBarraEclipsi);
