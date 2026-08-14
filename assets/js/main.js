@@ -166,7 +166,7 @@ function parsejaCsv(text) {
 }
 
 function creaTargetaActivitat(dades, ambEtiqueta) {
-  const { estat, dia, mes, tipus, titol, meta, descripcio } = dades;
+  const { estat, dia, mes, tipus, titol, meta, descripcio, enllac, enllacText } = dades;
   const div = document.createElement('div');
   div.className = 'targeta-activitat';
 
@@ -176,6 +176,13 @@ function creaTargetaActivitat(dades, ambEtiqueta) {
     etiquetaHtml = `<span class="${cls}">${tipus}</span>`;
   }
 
+  // 'enllac' és opcional: si no es defineix, no es mostra cap botó.
+  let enllacHtml = '';
+  if (enllac) {
+    const text = enllacText || 'Més informació';
+    enllacHtml = `<a href="${enllac}" class="btn btn-secundari activitat-enllac">${text} →</a>`;
+  }
+
   div.innerHTML = `
     <div class="data-bloc"><span class="dia">${dia}</span><span class="mes">${mes}</span></div>
     <div class="activitat-cos">
@@ -183,6 +190,7 @@ function creaTargetaActivitat(dades, ambEtiqueta) {
       <h3>${titol}</h3>
       <span class="activitat-meta">${meta}</span>
       <p>${descripcio}</p>
+      ${enllacHtml}
     </div>`;
   return div;
 }
@@ -282,7 +290,95 @@ async function carregaGaleria() {
   iniciaLightbox();
 }
 
-/* ---------- 5. Navegació mòbil i submenú Landerer ---------- */
+/* ---------- 5. Navegació principal i peu, generades des de navegacio.js ---------- */
+function creaEnllacNav(item) {
+  const a = document.createElement('a');
+  a.href = item.href;
+  a.dataset.pagina = item.pagina;
+  a.textContent = item.text;
+  if (item.classe) a.className = item.classe;
+  return a;
+}
+
+function renderitzaNavPrincipal() {
+  const contenidor = document.querySelector('[data-nav-principal]');
+  if (!contenidor || !Array.isArray(window.ADECTE_NAV)) return;
+  contenidor.innerHTML = '';
+  window.ADECTE_NAV.forEach(item => {
+    const li = document.createElement('li');
+    if (Array.isArray(item.submenu) && item.submenu.length) {
+      li.className = 'nav-item-dropdown';
+      li.appendChild(creaEnllacNav(item));
+
+      const boto = document.createElement('button');
+      boto.type = 'button';
+      boto.className = 'nav-dropdown-btn';
+      boto.setAttribute('aria-label', `Submenú ${item.text}`);
+      boto.setAttribute('aria-expanded', 'false');
+      boto.textContent = '▾';
+      li.appendChild(boto);
+
+      const ulSub = document.createElement('ul');
+      ulSub.className = 'nav-submenu';
+      item.submenu.forEach(sub => {
+        const liSub = document.createElement('li');
+        liSub.appendChild(creaEnllacNav(sub));
+        ulSub.appendChild(liSub);
+      });
+      li.appendChild(ulSub);
+    } else {
+      li.appendChild(creaEnllacNav(item));
+    }
+    contenidor.appendChild(li);
+  });
+}
+
+/* Si window.ADECTE_NAV_PEU no es defineix (o és null), el peu es genera
+   automàticament a partir d'ADECTE_NAV: totes les pàgines menys "Inici",
+   incloent-hi les subpàgines dels desplegables (sense repetir l'enllaç
+   del pare quan una subpàgina apunta a la mateixa URL). */
+function generaNavPeu() {
+  if (Array.isArray(window.ADECTE_NAV_PEU)) return window.ADECTE_NAV_PEU;
+  if (!Array.isArray(window.ADECTE_NAV)) return [];
+  const enllacos = [];
+  window.ADECTE_NAV.forEach(item => {
+    if (item.pagina === 'inici') return;
+    enllacos.push({ text: item.text, href: item.href });
+    if (Array.isArray(item.submenu)) {
+      item.submenu.forEach(sub => {
+        if (sub.href === item.href) return;
+        enllacos.push({ text: sub.text, href: sub.href });
+      });
+    }
+  });
+  return enllacos;
+}
+
+function renderitzaNavPeu() {
+  const contenidor = document.querySelector('[data-nav-peu]');
+  if (!contenidor) return;
+  contenidor.innerHTML = '';
+  generaNavPeu().forEach(item => {
+    const a = document.createElement('a');
+    a.href = item.href;
+    a.textContent = item.text;
+    contenidor.appendChild(a);
+  });
+}
+
+/* Troba a quin desplegable del menú pertany una pàgina (p. ex.
+   'landerer-edicio-1' pertany al grup 'landerer'), per marcar-lo actiu. */
+function trobaGrupPagina(pagina) {
+  if (!Array.isArray(window.ADECTE_NAV)) return null;
+  for (const item of window.ADECTE_NAV) {
+    if (Array.isArray(item.submenu) && item.submenu.some(s => s.pagina === pagina)) {
+      return item.pagina;
+    }
+  }
+  return null;
+}
+
+/* ---------- 6. Navegació mòbil i submenús ---------- */
 function iniciaNavegacio() {
   const boto = document.querySelector('.menu-toggle');
   const nav = document.querySelector('.nav-principal');
@@ -319,7 +415,7 @@ function iniciaNavegacio() {
   });
 }
 
-/* ---------- 6. Imatges amb alternativa si falten ---------- */
+/* ---------- 7. Imatges amb alternativa si falten ---------- */
 function gestionaImatgesAmbAlternativa() {
   document.querySelectorAll('img[data-fallback-text]').forEach(img => {
     if (img.dataset.fallbackInit) return;
@@ -337,14 +433,16 @@ function gestionaImatgesAmbAlternativa() {
   });
 }
 
-/* ---------- 7. Lightbox de galeria ---------- */
+/* ---------- 8. Lightbox de galeria ---------- */
 function iniciaLightbox() {
   const lightbox = document.querySelector('.lightbox');
-  if (!lightbox || lightbox.dataset.lightboxInit) return;
-  lightbox.dataset.lightboxInit = 'true';
+  if (!lightbox) return;
   const imgLightbox = lightbox.querySelector('img');
   const tancar = lightbox.querySelector('.lightbox-tancar');
 
+  // Aquest bloc s'ha d'executar CADA vegada que es crida la funció (també
+  // quan la galeria es carrega de manera dinàmica després del primer init),
+  // per això no depèn del guard 'lightboxInit' de més avall.
   document.querySelectorAll('.foto-galeria img').forEach(img => {
     if (img.dataset.lightboxBound) return;
     img.dataset.lightboxBound = 'true';
@@ -355,140 +453,37 @@ function iniciaLightbox() {
     });
   });
 
+  // Els listeners globals del lightbox (tancar, click fora, Escape) només
+  // s'han de vincular una vegada.
+  if (lightbox.dataset.lightboxInit) return;
+  lightbox.dataset.lightboxInit = 'true';
+
   function tancaLightbox() { lightbox.classList.remove('oberta'); imgLightbox.src = ''; }
   tancar?.addEventListener('click', tancaLightbox);
   lightbox.addEventListener('click', e => { if (e.target === lightbox) tancaLightbox(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') tancaLightbox(); });
 }
 
-/* ---------- 8. Marca l'enllaç de navegació actiu ---------- */
+/* ---------- 9. Marca l'enllaç de navegació actiu ---------- */
 function marcaNavActiu() {
   const pagina = document.body.dataset.pagina;
   if (!pagina) return;
   document.querySelectorAll(`.nav-principal a[data-pagina="${pagina}"]`).forEach(a => a.classList.add('actiu'));
-  if (pagina.startsWith('landerer')) {
-    document.querySelectorAll('.nav-item-dropdown').forEach(d => d.classList.add('actiu'));
+
+  const grup = trobaGrupPagina(pagina);
+  if (grup) {
+    document.querySelectorAll(`.nav-item-dropdown > a[data-pagina="${grup}"]`).forEach(a => {
+      a.closest('.nav-item-dropdown')?.classList.add('actiu');
+    });
   }
-}
-
-/* ---------- 9. Eclipsi total de sol — 12 d'agost de 2026 ---------- */
-const ECLIPSI_C1 = new Date(Date.UTC(2026, 7, 12, 17, 35, 0));
-const ECLIPSI_C2 = new Date(Date.UTC(2026, 7, 12, 18, 29, 0));
-const ECLIPSI_C3 = new Date(Date.UTC(2026, 7, 12, 18, 30, 30));
-const ECLIPSI_C4 = new Date(Date.UTC(2026, 7, 12, 19, 0, 0));
-
-function calculaEstatEclipsi(ara, c1, c2, c3, c4) {
-  let fase, overlap, missatge;
-  if (ara < c1) {
-    fase = 'abans'; overlap = 0;
-    missatge = 'Encara no ha començat';
-  } else if (ara < c2) {
-    fase = 'parcial-entrada';
-    overlap = (ara - c1) / (c2 - c1);
-    missatge = 'Fase parcial: la Lluna comença a tapar el Sol';
-  } else if (ara < c3) {
-    fase = 'totalitat'; overlap = 1;
-    missatge = 'TOTALITAT — el Sol queda completament tapat';
-  } else if (ara < c4) {
-    fase = 'parcial-sortida';
-    overlap = 1 - (ara - c3) / (c4 - c3);
-    missatge = 'Fase parcial: la Lluna es va retirant';
-  } else {
-    fase = 'despres'; overlap = 0;
-    missatge = 'L\'eclipsi ja s\'ha viscut. Fins al 2 d\'agost de 2027!';
-  }
-  return { fase, overlap, missatge };
-}
-
-function dibuixaEclipsi(svgEl, overlap, fase) {
-  if (!svgEl) return;
-  const lluna = svgEl.querySelector('[data-lluna-eclipsi]');
-  if (!lluna) return;
-  const distanciaMax = 40 * 2.1;
-  const distancia = distanciaMax * (1 - overlap);
-  const signe = (fase === 'parcial-sortida' || fase === 'despres') ? -1 : 1;
-  lluna.setAttribute('cx', 50 + signe * distancia);
-}
-
-function formataCompteEnrere(ms) {
-  if (ms <= 0) return '—';
-  const dies = Math.floor(ms / 86400000);
-  const hores = Math.floor((ms % 86400000) / 3600000);
-  const minuts = Math.floor((ms % 3600000) / 60000);
-  const segons = Math.floor((ms % 60000) / 1000);
-  return dies > 0 ? `${dies}d ${hores}h ${minuts}m ${segons}s` : `${hores}h ${minuts}m ${segons}s`;
-}
-
-function formataCompte2Unitats(ms) {
-  if (ms <= 0) return '—';
-  const dies = Math.floor(ms / 86400000);
-  const hores = Math.floor((ms % 86400000) / 3600000);
-  const minuts = Math.floor((ms % 3600000) / 60000);
-  return dies > 0 ? `${dies}d ${hores}h` : `${hores}h ${minuts}m`;
-}
-
-function actualitzaWidgetsEclipsi() {
-  const ara = new Date();
-
-  document.querySelectorAll('[data-eclipsi-widget]').forEach(widget => {
-    const c1 = widget.dataset.eclipsiC1 ? new Date(widget.dataset.eclipsiC1) : ECLIPSI_C1;
-    const c2 = widget.dataset.eclipsiC2 ? new Date(widget.dataset.eclipsiC2) : ECLIPSI_C2;
-    const c3 = widget.dataset.eclipsiC3 ? new Date(widget.dataset.eclipsiC3) : ECLIPSI_C3;
-    const c4 = widget.dataset.eclipsiC4 ? new Date(widget.dataset.eclipsiC4) : ECLIPSI_C4;
-
-    const { fase, overlap, missatge } = calculaEstatEclipsi(ara, c1, c2, c3, c4);
-    const objectius = { 'abans': c1, 'parcial-entrada': c2, 'totalitat': c3, 'parcial-sortida': c4 };
-    const objectiu = objectius[fase];
-
-    const svg = widget.querySelector('[data-eclipsi-svg]');
-    if (svg) dibuixaEclipsi(svg, overlap, fase);
-
-    const estatEl = widget.querySelector('[data-eclipsi-estat]');
-    if (estatEl) estatEl.textContent = missatge;
-
-    const compteEl = widget.querySelector('[data-eclipsi-compte-enrere]');
-    if (compteEl) compteEl.textContent = objectiu ? formataCompteEnrere(objectiu - ara) : 'Finalitzat';
-
-    const compte2uEl = widget.querySelector('[data-eclipsi-compte-2u]');
-    if (compte2uEl) compte2uEl.textContent = objectiu ? formataCompte2Unitats(objectiu - ara) : 'Viscut ✦';
-  });
-}
-
-function iniciaWidgetEclipsi() {
-  const hiHaWidgets = document.querySelector('[data-eclipsi-widget]');
-  if (!hiHaWidgets) return;
-  actualitzaWidgetsEclipsi();
-  setInterval(actualitzaWidgetsEclipsi, 1000);
-}
-
-function ajustaBarraEclipsi() {
-  const barra = document.querySelector('.barra-eclipsi');
-  if (!barra) return;
-  document.documentElement.style.setProperty('--barra-eclipsi-alcada', barra.offsetHeight + 'px');
-}
-
-function iniciaScrollEclipsi() {
-  const barra = document.querySelector('.barra-eclipsi');
-  if (!barra) return;
-  function comprovaScroll() {
-    if (window.scrollY > 30) {
-      barra.classList.add('compact');
-    } else {
-      barra.classList.remove('compact');
-    }
-    ajustaBarraEclipsi();
-  }
-  window.addEventListener('scroll', comprovaScroll);
-  comprovaScroll();
 }
 
 /* ---------- Inicialització ---------- */
 document.addEventListener('DOMContentLoaded', () => {
+  renderitzaNavPrincipal();
+  renderitzaNavPeu();
   document.querySelectorAll('[data-cel-estrellat]').forEach(c => iniciaCelEstrellat(c));
   iniciaWidgetCel();
-  iniciaWidgetEclipsi();
-  ajustaBarraEclipsi();
-  iniciaScrollEclipsi();
   iniciaNavegacio();
   gestionaImatgesAmbAlternativa();
   iniciaLightbox();
@@ -496,4 +491,3 @@ document.addEventListener('DOMContentLoaded', () => {
   carregaAgenda();
   carregaGaleria();
 });
-window.addEventListener('resize', ajustaBarraEclipsi);

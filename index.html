@@ -3,30 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADECTE</title>
+<title>ADECTE — Divulgació espacial i científica a les Terres de l'Ebre</title>
 <meta name="description" content="ADECTE organitza observacions astronòmiques i activitats de divulgació científica a les Terres de l'Ebre. Descobreix les pròximes activitats i fes-te'n soci.">
 <link rel="stylesheet" href="assets/css/style.css">
 <script src="https://unpkg.com/suncalc@1.9.0/suncalc.js"></script>
 </head>
 <body data-pagina="inici">
-
-<div class="barra-eclipsi" data-eclipsi-widget>
-  <div class="contenidor">
-    <div class="eclipsi-banner">
-      <span class="eclipsi-banner-icona" aria-hidden="true">🌘</span>
-      <div class="eclipsi-banner-text">
-        <span class="eyebrow">12 d'agost de 2026 · Esdeveniment excepcional</span>
-        <h2>L'eclipsi total de sol arriba a les Terres de l'Ebre</h2>
-        <p>Per primera vegada en 121 anys, un eclipsi total de sol serà visible des de la península — i les Terres de l'Ebre són una de les zones privilegiades on es podrà veure la totalitat. Descobreix horaris, seguretat i tot el que cal saber.</p>
-        <a href="eclipsi.html" class="btn btn-primari">Descobreix-ho tot →</a>
-      </div>
-      <div class="eclipsi-badge">
-        <span>Compte enrere</span>
-        <strong data-eclipsi-compte-2u>—</strong>
-      </div>
-    </div>
-  </div>
-</div>
 
 <header class="capcalera">
   <div class="contenidor">
@@ -38,22 +20,7 @@
     </a>
     <button class="menu-toggle" aria-label="Obre el menú" aria-expanded="false">☰</button>
     <nav class="nav-principal">
-      <ul>
-        <li><a href="index.html" data-pagina="inici">Inici</a></li>
-        <li><a href="activitats.html" data-pagina="activitats">Activitats</a></li>
-        <li class="nav-item-dropdown">
-          <a href="landerer.html" data-pagina="landerer">Landerer</a>
-          <button type="button" class="nav-dropdown-btn" aria-label="Submenú Landerer" aria-expanded="false">▾</button>
-          <ul class="nav-submenu">
-            <li><a href="landerer.html" data-pagina="landerer">El projecte</a></li>
-            <li><a href="landerer-edicio-1.html" data-pagina="landerer-edicio-1">Edició I</a></li>
-            <li><a href="landerer-edicio-2.html" data-pagina="landerer-edicio-2">Edició II</a></li>
-          </ul>
-        </li>
-        <li><a href="qui-som.html" data-pagina="qui-som">Qui som</a></li>
-        <li><a href="galeria.html" data-pagina="galeria">Galeria</a></li>
-        <li><a href="socis.html" class="btn-soci-nav" data-pagina="socis">Fes-te'n soci</a></li>
-      </ul>
+      <ul data-nav-principal></ul>
     </nav>
   </div>
 </header>
@@ -146,13 +113,7 @@
       </div>
       <div>
         <h4>Navegació</h4>
-        <a href="activitats.html">Activitats</a>
-        <a href="landerer.html">Landerer</a>
-        <a href="landerer-edicio-1.html">Edició I</a>
-        <a href="landerer-edicio-2.html">Edició II</a>
-        <a href="qui-som.html">Qui som</a>
-        <a href="galeria.html">Galeria</a>
-        <a href="socis.html">Fes-te'n soci</a>
+        <div data-nav-peu></div>
       </div>
       <div>
         <h4>Contacte</h4>
@@ -171,6 +132,7 @@
 </footer>
 
 <script src="assets/data/agenda.js"></script>
+<script src="assets/data/navegacio.js"></script>
 <script src="assets/js/main.js"></script>
 <script>document.getElementById('any-actual').textContent = new Date().getFullYear();</script>
 </body>

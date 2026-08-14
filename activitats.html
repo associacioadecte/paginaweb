@@ -19,22 +19,7 @@
     </a>
     <button class="menu-toggle" aria-label="Obre el menú" aria-expanded="false">☰</button>
     <nav class="nav-principal">
-      <ul>
-        <li><a href="index.html" data-pagina="inici">Inici</a></li>
-        <li><a href="activitats.html" data-pagina="activitats">Activitats</a></li>
-        <li class="nav-item-dropdown">
-          <a href="landerer.html" data-pagina="landerer">Landerer</a>
-          <button type="button" class="nav-dropdown-btn" aria-label="Submenú Landerer" aria-expanded="false">▾</button>
-          <ul class="nav-submenu">
-            <li><a href="landerer.html" data-pagina="landerer">El projecte</a></li>
-            <li><a href="landerer-edicio-1.html" data-pagina="landerer-edicio-1">Edició I</a></li>
-            <li><a href="landerer-edicio-2.html" data-pagina="landerer-edicio-2">Edició II</a></li>
-          </ul>
-        </li>
-        <li><a href="qui-som.html" data-pagina="qui-som">Qui som</a></li>
-        <li><a href="galeria.html" data-pagina="galeria">Galeria</a></li>
-        <li><a href="socis.html" class="btn-soci-nav" data-pagina="socis">Fes-te'n soci</a></li>
-      </ul>
+      <ul data-nav-principal></ul>
     </nav>
   </div>
 </header>
@@ -87,13 +72,7 @@
       </div>
       <div>
         <h4>Navegació</h4>
-        <a href="activitats.html">Activitats</a>
-        <a href="landerer.html">Landerer</a>
-        <a href="landerer-edicio-1.html">Edició I</a>
-        <a href="landerer-edicio-2.html">Edició II</a>
-        <a href="qui-som.html">Qui som</a>
-        <a href="galeria.html">Galeria</a>
-        <a href="socis.html">Fes-te'n soci</a>
+        <div data-nav-peu></div>
       </div>
       <div>
         <h4>Contacte</h4>
@@ -112,6 +91,7 @@
 </footer>
 
 <script src="assets/data/agenda.js"></script>
+<script src="assets/data/navegacio.js"></script>
 <script src="assets/js/main.js"></script>
 <script>document.getElementById('any-actual').textContent = new Date().getFullYear();</script>
 </body>
