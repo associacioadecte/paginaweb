@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Pàgina no trobada | ADECTE</title>
+<meta name="description" content="Sembla que t'has desviat de l'òrbita. Torna a la pàgina principal d'ADECTE.">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .error-contenidor {
+    min-height: calc(100vh - 74px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-5) 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .error-cos {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  .error-codi {
+    font-family: var(--font-mono);
+    font-size: clamp(5rem, 15vw, 9rem);
+    font-weight: 700;
+    color: var(--accent-clar);
+    line-height: 1;
+    margin-bottom: var(--space-2);
+    text-shadow: 0 0 30px rgba(59,130,246,0.3);
+  }
+  .curiositat-espacial {
+    background: var(--nit-clara);
+    border: 1px solid var(--nit-vora);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    margin: var(--space-3) 0 var(--space-4);
+    text-align: left;
+  }
+  .curiositat-espacial h3 {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--accent-clar);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+  }
+  .curiositat-espacial p {
+    color: var(--boira);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+  }
+</style>
+</head>
+<body data-pagina="404">
+
+<header class="capcalera">
+  <div class="contenidor">
+    efectiu
+    <a href="index.html" class="marca">
+      <img src="assets/img/logo.png" alt="Logotip d'ADECTE"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <span class="marca-fallback" style="display:none;">AD</span>
+      <span>ADECTE</span>
+    </a>
+    <button class="menu-toggle" aria-label="Obre el menú" aria-expanded="false">☰</button>
+    <nav class="nav-principal">
+      <ul data-nav-principal></ul>
+    </nav>
+  </div>
+</header>
+
+<main class="error-contenidor">
+  <div class="contenidor">
+    <div class="error-cos">
+      <div class="error-codi">404</div>
+      <span class="eyebrow" style="justify-content:center;">Error de trajectòria</span>
+      <h1>T'has desviat de l'òrbita!</h1>
+      <p style="color: var(--boira); font-size: 1.1rem; margin-top: 1rem;">
+        Sembla que la coordenada que busques s'ha perdut a l'espai profund o encara no ha estat descoberta.
+      </p>
+
+      <!-- Curiositat espacial automàtica -->
+      <div class="curiositat-espacial">
+        <h3>✦ Curiositat còsmica per a caminants perduts</h3>
+        <p id="text-curiositat">Carregant dades del cosmos...</p>
+      </div>
+
+      <div style="display: flex; gap: var(--space-2); justify-content: center; flex-wrap: wrap;">
+        <a href="index.html" class="btn btn-primari">Tornar a l'inici</a>
+        <a href="activitats.html" class="btn btn-secundari">Veure activitats</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="peu">
+  <div class="contenidor">
+    <div class="peu-graella">
+      <div>
+        <h4>ADECTE</h4>
+        <p style="color:var(--boira); max-width:320px; font-size:.92rem;">Associació per a la Divulgació Espacial i Científica de les Terres de l'Ebre.</p>
+      </div>
+      <div>
+        <h4>Navegació</h4>
+        <div data-nav-peu></div>
+      </div>
+      <div>
+        <h4>Contacte</h4>
+        <a href="mailto:associacioadecte@gmail.com">associacioadecte@gmail.com</a>
+        <a href="https://instagram.com/adecte_assoc" target="_blank" rel="noopener" class="peu-instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+          @adecte_assoc
+        </a>
+      </div>
+    </div>
+    <div class="peu-baix">
+      <span>© <span id="any-actual">2026</span> ADECTE — Terres de l'Ebre</span>
+      <span>Fet amb ✦ per a tots els qui miren amunt</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/data/agenda.js"></script>
+<script src="assets/data/navegacio.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+  document.getElementById('any-actual').textContent = new Date().getFullYear();
+
+  // Curiositats espacials rotatives per alleugerir l'error 404
+  const curiositats = [
+    "Sabies que la Voyager 1, l'objecte humà més llunyà de la Terra, es troba a més de 24 mil milions de quilòmetres i triga hores a enviar un senyal de ràdio? Segurament tu trigaràs menys a tornar a l'inici!",
+    "La llum del Sol triga aproximadament 8 minuts i 20 segons a arribar a la Terra. Si haguessis trobat aquesta pàgina a la primera, t'ho estaries estalviant!",
+    "A l'espai exterior no hi ha aire, la qual cosa significa que les ones de so no poden viatjar. Si crides a l'espai per un error 404, ningú et sentirà.",
+    "Un dia a Venus és més llarg que el seu any. Per sort, la nostra pàgina principal carrega molt més ràpid que això."
+  ];
+
+  const aleatoria = curiositats[Math.floor(Math.random() * curiositats.length)];
+  document.getElementById('text-curiositat').textContent = aleatoria;
+</script>
+</body>
+</html>
