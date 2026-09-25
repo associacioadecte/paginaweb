@@ -585,3 +585,90 @@ body[data-pagina="landerer-edicio-2"]{
   background:var(--landerer-cel); color:var(--nit);
 }
 .btn-landerer:hover{ background:var(--landerer-blanc); }
+
+/* =========================================================
+   I Jornada de Divulgació Espacial — blocs reutilitzables
+   ========================================================= */
+
+/* Barra d'informació ràpida (data / horari / lloc / entrada) */
+.barra-info-rapida{
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(210px,1fr));
+  gap:var(--space-2); margin-top:var(--space-3); max-width:820px;
+}
+.info-item{
+  display:flex; align-items:center; gap:.8rem;
+  background:rgba(255,255,255,.04); border:1px solid var(--nit-vora);
+  border-radius:12px; padding:.9rem 1.1rem; text-align:left;
+}
+.info-item .info-icona{ font-size:1.5rem; line-height:1; flex-shrink:0; }
+.info-item .info-etiqueta{
+  display:block; font-family:var(--font-mono); font-size:.66rem;
+  text-transform:uppercase; letter-spacing:.08em; color:var(--boira); margin-bottom:.15rem;
+}
+.info-item .info-valor{
+  font-family:var(--font-display); font-weight:600; font-size:.96rem;
+  color:var(--blanc); line-height:1.25;
+}
+
+/* Targeta destacada (taller, avisos importants...) */
+.targeta-destacada{
+  background:var(--nit-clara); border:1px solid var(--nit-vora); border-left:4px solid var(--accent-clar);
+  border-radius:var(--radius); padding:var(--space-4);
+}
+.llista-practica{ list-style:none; margin:var(--space-2) 0 var(--space-3); padding:0; display:grid; gap:.6rem; }
+.llista-practica li{ display:flex; gap:.6rem; color:var(--boira); font-size:.95rem; }
+.llista-practica li strong{ color:var(--blanc); font-weight:600; }
+.llista-practica li::before{ content:"✦"; color:var(--accent-clar); flex-shrink:0; }
+
+/* Graella de vídeos promocionals ("Descobreix els participants") */
+.graella-videos{ display:grid; grid-template-columns:repeat(2, 1fr); gap:var(--space-3); }
+@media (max-width:640px){ .graella-videos{ grid-template-columns:1fr; } }
+.targeta-video.doble{ grid-column:span 2; }
+@media (max-width:640px){ .targeta-video.doble{ grid-column:span 1; } }
+.targeta-video{
+  background:var(--nit-clara); border:1px solid var(--nit-vora);
+  border-radius:var(--radius); overflow:hidden;
+}
+.targeta-video .video-embed{ aspect-ratio:16/9; background:var(--nit); }
+.targeta-video .video-embed iframe{ width:100%; height:100%; border:0; display:block; }
+.targeta-video .video-cos{ padding:var(--space-2) var(--space-3) var(--space-3); }
+.targeta-video h3{ font-size:1.02rem; margin-bottom:.3rem; }
+.targeta-video p{ color:var(--boira); font-size:.9rem; margin-bottom:0; }
+
+.targeta-video.proximament .video-embed{
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:.4rem;
+  border:1px dashed var(--nit-vora); color:var(--boira);
+  font-family:var(--font-mono); font-size:.85rem; text-align:center;
+}
+.targeta-video.proximament .video-embed span:first-child{ font-size:1.6rem; color:var(--accent-clar); }
+
+/* Avís legal petit */
+.avis-legal{
+  max-width:680px; margin:var(--space-4) auto 0; text-align:center;
+  font-size:.85rem; color:var(--boira); border-top:1px solid var(--nit-vora); padding-top:var(--space-3);
+}
+
+/* Panell blanc per a blocs de logos (evita que es vegi el fons blanc dels logos) */
+.panell-logos{
+  background:#ffffff; border-radius:20px;
+  padding:var(--space-4) var(--space-3); color:#0f172a;
+}
+.panell-logos h3{
+  color:#64748b; font-family:var(--font-mono); font-size:.75rem;
+  text-transform:uppercase; letter-spacing:.1em; margin-bottom:var(--space-2);
+}
+.panell-logos .logo-slot{
+  background:transparent; border:1px solid #e2e8f0;
+}
+.panell-logos .sense-imatge{ color:#64748b; }
+
+/* Etiqueta "properament" (inscripcions encara no obertes) */
+.etiqueta.proximament{ background:var(--nit-vora); color:var(--delta); border:1px solid var(--delta); }
+.btn-desactivat{
+  display:inline-flex; align-items:center; gap:.5em;
+  padding:.85rem 1.5rem; border-radius:999px;
+  font-family:var(--font-body); font-weight:600; font-size:.97rem;
+  border:1px solid var(--nit-vora); color:var(--boira);
+  opacity:.75; cursor:not-allowed; pointer-events:none;
+}
+.nota-taller{ font-size:.85rem; color:var(--boira); margin-top:var(--space-2); margin-bottom:0; }

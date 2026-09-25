@@ -25,7 +25,8 @@ window.ADECTE_NAV = [
     submenu: [
       { text: 'Totes les activitats', pagina: 'activitats', href: 'activitats.html' },
       {text: 'Presentació ADECTE', pagina: 'presentacio', href: 'presentacio-adecte.html'},
-      { text: 'Eclipsi Solar 2026', pagina: 'eclipsi', href: 'eclipsi.html' }
+      { text: 'Eclipsi Solar 2026', pagina: 'eclipsi', href: 'eclipsi.html' },
+      { text: 'I Jornada Espacial', pagina: 'jornada-espacial', href: 'jornada-espacial.html' }
     ]
   },
   {
