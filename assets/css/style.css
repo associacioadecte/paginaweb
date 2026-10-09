@@ -672,3 +672,20 @@ body[data-pagina="landerer-edicio-2"]{
   opacity:.75; cursor:not-allowed; pointer-events:none;
 }
 .nota-taller{ font-size:.85rem; color:var(--boira); margin-top:var(--space-2); margin-bottom:0; }
+
+/* Banner superior d'avís (índex): enllaç directe a les inscripcions */
+.banner-inscripcions{
+  display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:.4rem 1rem;
+  margin-top:74px; /* deixa lloc a la capçalera fixa */
+  padding:.6rem var(--space-3); text-align:center;
+  background:linear-gradient(135deg, var(--accent), var(--accent-fosc));
+  color:#fff; font-size:.9rem; line-height:1.35;
+}
+.banner-inscripcions:hover{ background:linear-gradient(135deg, var(--accent-clar), var(--accent)); }
+.banner-inscripcions strong{ font-weight:600; }
+.banner-inscripcions-cta{
+  font-family:var(--font-mono); font-size:.78rem; letter-spacing:.04em; text-transform:uppercase;
+  border:1px solid rgba(255,255,255,.6); border-radius:999px; padding:.15rem .7rem; white-space:nowrap;
+}
+/* Evita que la capçalera fixa tapi l'ancoratge de les inscripcions */
+#inscripcions{ scroll-margin-top:74px; }
