@@ -25,12 +25,6 @@
   </div>
 </header>
 
-<a href="jornada-espacial.html" class="banner-inscripcions" data-banner-jornada>
-  <span>🚀 <strong>I Jornada de Divulgació Espacial · 7 de novembre</strong> — Una jornada oberta per acostar l'espai i la ciència a tothom</span>
-  <span data-banner-compte style="font-family:var(--font-mono); font-variant-numeric:tabular-nums; font-size:.85rem; white-space:nowrap;"></span>
-  <span class="banner-inscripcions-cta">Descobreix-la →</span>
-</a>
-
 <section class="heroi">
   <canvas data-cel-estrellat aria-hidden="true"></canvas>
   <div class="contenidor heroi-contingut">
@@ -141,33 +135,6 @@
 <script src="assets/data/agenda.js"></script>
 <script src="assets/data/navegacio.js"></script>
 <script src="assets/js/main.js"></script>
-<script>
-(function () {
-  // Data d'inici de la Jornada (hora de Catalunya). Ajusta l'hora si cal.
-  var INICI = new Date('2026-11-07T11:00:00+01:00').getTime();
-  var FI    = new Date('2026-11-08T14:00:00+01:00').getTime();
-  var el = document.querySelector('[data-banner-compte]');
-  if (!el) return;
-  function pad(n){ return String(n).padStart(2, '0'); }
-  function actualitza() {
-    var ara = Date.now(), resta = INICI - ara;
-    if (resta > 0) {
-      var d = Math.floor(resta / 864e5),
-          h = Math.floor(resta % 864e5 / 36e5),
-          m = Math.floor(resta % 36e5 / 6e4),
-          s = Math.floor(resta % 6e4 / 1e3);
-      el.textContent = '⏳ ' + d + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
-    } else if (ara < FI) {
-      el.textContent = '🟢 Avui és la Jornada!';
-    } else {
-      el.textContent = 'Gràcies per ser-hi!';
-      clearInterval(timer);
-    }
-  }
-  var timer = setInterval(actualitza, 1000);
-  actualitza();
-})();
-</script>
 <script>document.getElementById('any-actual').textContent = new Date().getFullYear();</script>
 </body>
 </html>
